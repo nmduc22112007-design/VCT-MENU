@@ -169,9 +169,14 @@ void Menu::xuLyMuaVe(KhachHang& kh) {
                     if (trangThai != TrangThaiMuaVe::THANH_CONG) break;
 
                     if (kh.daTonTaiGhe(ngay, zone, seat)) {
-                        std::cout << "[ERROR] Ghe " << seat << " da duoc mua!\n";
-                        break;
+                        std::cout << "[ERROR] Ghe " << seat
+                                  << " (khu vuc " << zone
+                                  << ") ngay " << ngay
+                                  << " da duoc mua!\n";
+                        trangThai = TrangThaiMuaVe::LOI_GHE;
+                        break; // ✅ quay lại menu mua vé
                     }
+
 
                     if (!kh.themVe(std::make_shared<TierB>(ngay, zone, seat)))
                         trangThai = TrangThaiMuaVe::LOI_GIOI_HAN;
@@ -186,10 +191,16 @@ void Menu::xuLyMuaVe(KhachHang& kh) {
                     trangThai = xuLyChonGhe("TierA", seat, zone);
                     if (trangThai != TrangThaiMuaVe::THANH_CONG) break;
 
+
                     if (kh.daTonTaiGhe(ngay, zone, seat)) {
-                        std::cout << "[ERROR] Ghe " << seat << " da duoc mua!\n";
-                        break;
+                        std::cout << "[ERROR] Ghe " << seat
+                                  << " (khu vuc " << zone
+                                  << ") ngay " << ngay
+                                  << " da duoc mua!\n";
+                        trangThai = TrangThaiMuaVe::LOI_GHE;
+                        break; // ✅ quay lại menu mua vé
                     }
+
 
                     if (!kh.themVe(std::make_shared<TierA>(ngay, zone, seat)))
                         trangThai = TrangThaiMuaVe::LOI_GIOI_HAN;
@@ -203,9 +214,14 @@ void Menu::xuLyMuaVe(KhachHang& kh) {
                     if (trangThai != TrangThaiMuaVe::THANH_CONG) break;
 
                     if (kh.daTonTaiGhe(ngay, zone, seat)) {
-                        std::cout << "[ERROR] Ghe " << seat << " da duoc mua!\n";
-                        break;
+                        std::cout << "[ERROR] Ghe " << seat
+                                  << " (khu vuc " << zone
+                                  << ") ngay " << ngay
+                                  << " da duoc mua!\n";
+                        trangThai = TrangThaiMuaVe::LOI_GHE;
+                        break; // ✅ quay lại menu mua vé
                     }
+
 
                     if (!kh.themVe(std::make_shared<TierS>(ngay, zone, seat)))
                         trangThai = TrangThaiMuaVe::LOI_GIOI_HAN;
@@ -219,6 +235,18 @@ void Menu::xuLyMuaVe(KhachHang& kh) {
                     trangThai = xuLyChonGhe("3DayPass", seat, zone);
                     if (trangThai != TrangThaiMuaVe::THANH_CONG) break;
 
+                    const std::string NGAY_3DAY = "15-16-17/05/2026";
+
+                    if (kh.daTonTaiGhe(NGAY_3DAY, zone, seat)) {
+                        std::cout << "[ERROR] Ghe " << seat
+                                  << " (khu vuc " << zone
+                                  << ") Tier 3-Day Pass da duoc mua!\n";
+                        trangThai = TrangThaiMuaVe::LOI_GHE;
+                        break;
+                    }
+
+
+
                     if (!kh.themVe(std::make_shared<ThreeDayPass>(zone, seat)))
                         trangThai = TrangThaiMuaVe::LOI_GIOI_HAN;
                     else
@@ -227,18 +255,44 @@ void Menu::xuLyMuaVe(KhachHang& kh) {
                 }
 
                 case 5: {
+                    // ===== HOAN VE THEO GHE =====
                     if (kh.getSoLuongVe() == 0) {
                         std::cout << "[INFO] Khong co ve nao de hoan!\n";
                         break;
                     }
+
+                    // Hien thi danh sach ve hien co (co ghe)
                     kh.hienThiThongTin();
-                    // (Giữ nguyên logic hoàn vé cũ của bạn)
-                    break;
+
+                    std::string ngay, seat;
+                    std::cout << "Nhap ngay thi dau cua ve muon hoan (VD: 16/05/2026): ";
+                    std::cin >> ngay;
+
+                    std::cout << "Nhap so ghe muon hoan (VD: B12): ";
+                    std::cin >> seat;
+
+                    // ===== CHUAN HOA GHE VE CHU HOA =====
+                    for (char& c : seat) {
+                        c = std::toupper(static_cast<unsigned char>(c));
+                    }
+
+                    // ===== THUC HIEN HOAN VE =====
+                    if (kh.hoanVeTheoGhe(ngay, seat)) {
+                        std::cout << "[OK] Da hoan ve ghe "
+                                  << seat << " ngay " << ngay << "\n";
+
+                        kh.hienThiThongTin();
+                    } else {
+                        std::cout << "[ERROR] Khong tim thay ve co ghe "
+                                  << seat << " ngay " << ngay << "\n";
+                    }
+
+                    break; // ✅ RẤT QUAN TRỌNG
                 }
 
                 default:
                     std::cout << "[ERROR] Lua chon khong hop le!\n";
-                    continue;
+                     continue;
             }
 
             if (choice >= 1 && choice <= 4) {
