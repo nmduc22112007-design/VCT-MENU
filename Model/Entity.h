@@ -4,7 +4,7 @@
 
 #ifndef VCT_PACIFIC_STAGE_1_ENTITY_H
 #define VCT_PACIFIC_STAGE_1_ENTITY_H
-
+#pragma once
 class Entity {
 public:
     virtual ~Entity() = default;

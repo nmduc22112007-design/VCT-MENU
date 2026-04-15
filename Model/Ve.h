@@ -4,7 +4,7 @@
 
 #ifndef VCT_PACIFIC_STAGE_1_VE_H
 #define VCT_PACIFIC_STAGE_1_VE_H
-
+#pragma once
 #include "Entity.h"
 #include <string>
 

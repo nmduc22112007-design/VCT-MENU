@@ -28,6 +28,8 @@ public:
     bool daTonTaiGhe(const std::string& ngay,
                  const std::string& zone,
                  const std::string& seat) const;
+    bool hoanVeTheoGhe(const std::string& ngay,
+                   const std::string& seat);
     // Constructor mới (dùng cho CSV)
     KhachHang(const std::string& ma,
               const std::string& t,

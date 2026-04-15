@@ -10,11 +10,33 @@ bool KhachHang::daTonTaiGhe(const std::string& ngay,
         if (ve->getNgaySuDung() == ngay &&
             ve->getKhuVuc() == zone &&
             ve->getSoGhe() == seat) {
+
+
+            // ✅ 3-Day Pass không so ngày
+            if (ve->getTenTier() == "3DayPass")
+                return true;
+
+            if (ve->getNgaySuDung() == ngay)
+                return true;
+            }
+    }
+    return false;
+}
+
+// ========= HOAN VE THEO SO GHE ===========
+bool KhachHang::hoanVeTheoGhe(const std::string& ngay,
+                               const std::string& seat) {
+    for (auto it = danhSachVe.begin(); it != danhSachVe.end(); ++it) {
+        if ((*it)->getSoGhe() == seat &&
+            (*it)->getNgaySuDung() == ngay) {
+            danhSachVe.erase(it);
             return true;
             }
     }
     return false;
 }
+
+
 // ===== CONSTRUCTOR TU CSV =====
 KhachHang::KhachHang(const std::string& ma,
                      const std::string& t,
