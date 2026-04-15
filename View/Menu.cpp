@@ -117,8 +117,64 @@ void Menu::hienThiMenu() {
     std::cout << "0. Quay lai\n";
     std::cout << "================================\n";
 }
-
 void Menu::xuLyMenu(TicketManager& manager) {
+
+    auto& dsKhachHang = manager.getDanhSachKhachHang();
+
+    // =====================================================
+    // ======== CHON KHACH HANG TU CSV HOAC TAO MOI ========
+    // =====================================================
+
+    std::shared_ptr<KhachHang> khNguoiDung = nullptr;
+
+    if (!dsKhachHang.empty()) {
+        while (true) {
+            std::cout << "\n===== DANH SACH KHACH HANG =====\n";
+
+            for (size_t i = 0; i < dsKhachHang.size(); ++i) {
+                std::cout << i + 1 << ". "
+                          << dsKhachHang[i]->getMaKH() << " | "
+                          << dsKhachHang[i]->getTen() << " | "
+                          << dsKhachHang[i]->getSoDienThoai() << "\n";
+            }
+
+            std::cout << "0. Tao khach hang moi\n";
+            std::cout << "Lua chon: ";
+
+            int chon;
+            std::cin >> chon;
+
+            // ✅ BẮT LỖI NHẬP KHÔNG PHẢI SỐ
+            if (std::cin.fail()) {
+                std::cin.clear();
+                boQuaDongDem();
+                std::cout << "[LOI] Vui long nhap so hop le!\n";
+                continue;
+            }
+
+            boQuaDongDem();
+
+            if (chon == 0) {
+                // tạo khách mới bằng menu cũ
+                break;
+            }
+            else if (chon > 0 && chon <= static_cast<int>(dsKhachHang.size())) {
+                khNguoiDung = dsKhachHang[chon - 1];
+                std::cout << "[INFO] Dang su dung khach hang: "
+                          << khNguoiDung->getMaKH()
+                          << " - " << khNguoiDung->getTen() << "\n";
+                break; // ✅ THOÁT VÒNG LẶP, KHÔNG THOÁT CHƯƠNG TRÌNH
+            }
+            else {
+                std::cout << "[LOI] Lua chon khong hop le. Vui long chon lai!\n";
+            }
+        }
+    }
+
+
+    // =====================================================
+    // ================== MENU HE THONG ====================
+    // =====================================================
     int luaChon = -1;
 
     do {
@@ -133,7 +189,8 @@ void Menu::xuLyMenu(TicketManager& manager) {
         boQuaDongDem();
 
         switch (luaChon) {
-            case 1: {
+
+            case 1: { // ===== TAO / CHON KHACH HANG =====
                 std::string ten;
                 std::string sdt;
 
@@ -165,18 +222,21 @@ void Menu::xuLyMenu(TicketManager& manager) {
 
                 bool daTonTai = false;
                 auto kh = manager.themKhachHang(ten, sdt, daTonTai);
+
                 if (daTonTai) {
                     std::cout << "[TRUNG] So dien thoai da ton tai. Da mo khach hang cu: "
                               << kh->getMaKH() << " - " << kh->getTen() << "\n";
                 } else {
-                    std::cout << "[OK] Da tao khach hang moi: " << kh->getMaKH() << "\n";
+                    std::cout << "[OK] Da tao khach hang moi: "
+                              << kh->getMaKH() << "\n";
                 }
 
+                khNguoiDung = kh; // ✅ CAP NHAT KHACH DANG DUNG
                 xuLyMuaVe(manager, kh);
                 break;
             }
 
-            case 2: {
+            case 2: { // ===== TIM KHACH THEO MA =====
                 std::string maKH;
                 std::cout << "Nhap ma khach hang: ";
                 std::getline(std::cin, maKH);
@@ -188,6 +248,7 @@ void Menu::xuLyMenu(TicketManager& manager) {
                 }
 
                 std::cout << "[OK] Da tim thay " << kh->getTen() << "\n";
+                khNguoiDung = kh; // ✅ CAP NHAT KHACH DANG DUNG
                 xuLyMuaVe(manager, kh);
                 break;
             }
@@ -210,9 +271,9 @@ void Menu::xuLyMenu(TicketManager& manager) {
                 std::cout << "[LOI] Lua chon khong hop le.\n";
                 break;
         }
+
     } while (luaChon != 0);
 }
-
 void Menu::xuLyMuaVe(TicketManager& manager, const std::shared_ptr<KhachHang>& kh) {
     int choice = -1;
 

@@ -1,21 +1,47 @@
 #include <iostream>
+#include <filesystem>
 #include <windows.h>
 
 #include "Control/TicketManager.h"
 #include "View/Menu.h"
 
+// =================================================
+// ✅ HAM TIM DUONG DAN DATA
+// =================================================
+namespace {
+    std::string timDuongDanData(const std::string& fileName) {
+        namespace fs = std::filesystem;
+
+        fs::path current = fs::current_path();
+        for (int i = 0; i < 5; ++i) {
+            fs::path candidate = current / "Data" / fileName;
+            if (fs::exists(candidate)) {
+                return candidate.string();
+            }
+
+            if (!current.has_parent_path()) {
+                break;
+            }
+            current = current.parent_path();
+        }
+
+        return (fs::path("Data") / fileName).string();
+    }
+}
+
+// =================================================
+// ✅ HAM MAIN
+// =================================================
 int main() {
-    // ===== UTF-8 CHO WINDOWS CONSOLE =====
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    // ===== KHOI TAO CONTROLLER + LOAD DU LIEU THAT TU CSV =====
     TicketManager manager;
-    manager.loadKhachHangCSV("Data/KhachHang.csv");
-    manager.loadVeCSV("Data/Ve.csv");
 
-    // ===== GOI MENU HE THONG =====
+    manager.loadKhachHangCSV(timDuongDanData("KhachHang.csv"));
+    manager.loadVeCSV(timDuongDanData("Ve.csv"));
+
     Menu::xuLyMenu(manager);
-
     return 0;
 }
+

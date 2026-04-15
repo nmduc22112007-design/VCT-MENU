@@ -36,6 +36,7 @@ add_executable(VCT_Pacific_Stage_1
         # ===== UTILS =====
         Utils/Utils.cpp
         Utils/CSVReader.cpp
+        Exception/InvalidTicketIndexException.h
 )
 
 # ===== ROOT INCLUDE (DE INCLUDE "Control/..." ) =====

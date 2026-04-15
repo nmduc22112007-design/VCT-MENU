@@ -51,6 +51,7 @@ std::shared_ptr<Ve> taoVeTuDuLieu(const std::string& tier,
 }
 
 void TicketManager::loadKhachHangCSV(const std::string& path) {
+
     khachHangFilePath = path;
     auto rows = CSVReader::readCSV(path);
 
@@ -77,6 +78,7 @@ void TicketManager::loadKhachHangCSV(const std::string& path) {
     }
 
     std::cout << "[INFO] Da load " << dsKhachHang.size() << " khach hang tu CSV.\n";
+
 }
 
 void TicketManager::loadVeCSV(const std::string& path) {
