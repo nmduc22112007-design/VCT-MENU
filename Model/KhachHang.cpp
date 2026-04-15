@@ -93,7 +93,9 @@ void KhachHang::hienThiThongTin() const {
 
     for (size_t i = 0; i < danhSachVe.size(); ++i) {
         std::cout << "  Ve " << i + 1
+                  << " | Loai: " << danhSachVe[i]->getTenTier()
                   << " | Ngay: " << danhSachVe[i]->getNgaySuDung()
+                  << " | Ghe: " << danhSachVe[i]->getSoGhe()
                   << " | Gia: "
                   << formatTien(danhSachVe[i]->tinhGia())
                   << " VND\n";
@@ -107,4 +109,12 @@ void KhachHang::hienThiThongTin() const {
 
 std::string KhachHang::getMaKH() const {
     return maKH;
+}
+
+std::string KhachHang::getSoDienThoai() const {
+    return sdt;
+}
+
+const std::vector<std::shared_ptr<Ve>>& KhachHang::getDanhSachVe() const {
+    return danhSachVe;
 }

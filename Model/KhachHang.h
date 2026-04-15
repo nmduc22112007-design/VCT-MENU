@@ -23,6 +23,7 @@ public:
 
     // ===== GETTER =====
     std::string getMaKH() const;
+    std::string getSoDienThoai() const;
 
     bool daTonTaiGhe(const std::string& ngay,
                  const std::string& zone,
@@ -50,6 +51,7 @@ public:
     bool hoanVe(size_t index);     // Hoan 1 ve
     void hoanTatCaVe();            // Hoan toan bo ve
     size_t getSoLuongVe() const;   // So luong ve hien tai
+    const std::vector<std::shared_ptr<Ve>>& getDanhSachVe() const;
 
     // ===== HIEN THI =====
     void hienThiThongTin() const;

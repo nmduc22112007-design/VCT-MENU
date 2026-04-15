@@ -1,7 +1,7 @@
 #include <iostream>
 #include <windows.h>
 
-#include "../Control/TicketManager.h"
+#include "Control/TicketManager.h"
 #include "View/Menu.h"
 
 int main() {
@@ -12,6 +12,7 @@ int main() {
     // ===== KHOI TAO CONTROLLER + LOAD DU LIEU THAT TU CSV =====
     TicketManager manager;
     manager.loadKhachHangCSV("Data/KhachHang.csv");
+    manager.loadVeCSV("Data/Ve.csv");
 
     // ===== GOI MENU HE THONG =====
     Menu::xuLyMenu(manager);
